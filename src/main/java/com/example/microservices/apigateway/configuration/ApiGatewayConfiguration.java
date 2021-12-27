@@ -27,6 +27,14 @@ public class ApiGatewayConfiguration {
                         .uri("lb://currency-exchange"))
                 .route(p -> p.path("/currency-conversion/**")
                         .uri("lb://currency-conversion"))
+                //Re-write example
+                .route(p -> p.path("/currency-conversion-new/**")
+                        .filters(f -> f.rewritePath(
+                                "/currency-conversion-feign/(?<segment>.*)",
+                                "/currency-conversion-feign/${segment}"))
+                        .uri("lb://currency-conversion")
+                )
+
                 .build();
     }
 }
